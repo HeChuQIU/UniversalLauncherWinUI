@@ -1,0 +1,110 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+	<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+	<RootNamespace>UniversalLauncherWinUI</RootNamespace>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
+	<Platforms>x86;x64;ARM64</Platforms>
+	<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+	<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+	<UseWinUI>true</UseWinUI>
+	<EnableMsixTooling>true</EnableMsixTooling>
+	<Version>1.0.0</Version>
+	<ImplicitUsings>true</ImplicitUsings>
+	<LangVersion>Latest</LangVersion>
+	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	<WindowsPackageType>MSIX</WindowsPackageType>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Include="Assets\**\*">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+
+<ItemGroup>
+  <Content Include="Strings\**\*.resw">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
+<ItemGroup>
+  <None Remove="Views\LauncherPage.xaml" />
+</ItemGroup>
+
+  <ItemGroup>
+	<Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <!-- 
+    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+    Tools extension to be activated for this project even if the Windows App SDK Nuget
+    package has not yet been restored.
+  -->
+  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+    <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CmlLib.Core" Version="4.0.2" />
+    <PackageReference Include="CommunityToolkit.Common" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.CameraPreview" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.ImageCropper" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.RadialGauge" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.RangeSelector" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.RichSuggestBox" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Controls.TokenizingTextBox" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Lottie" Version="8.0.280225" />
+    <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.1.240821" />
+    <PackageReference Include="CommunityToolkit.WinUI.Triggers" Version="8.1.240821" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0-preview.7.24405.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.7.24405.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.7.24405.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-preview.7.24405.7" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240802000" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Serilog" Version="4.0.2-dev-02224" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="WinUICommunity.Components" Version="6.9.0" />
+    <PackageReference Include="WinUICommunity.ContextMenuExtensions" Version="6.9.0" />
+    <PackageReference Include="WinUICommunity.Core" Version="6.9.0" />
+    <PackageReference Include="WinUICommunity.LandingPages" Version="6.9.0" />
+    <PackageReference Include="WinUICommunity.Win2D" Version="6.9.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\LauncherPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <!-- 
+    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
+    Explorer "Package and Publish" context menu entry to be enabled for this project even if 
+    the Windows App SDK Nuget package has not yet been restored.
+  -->
+  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+	<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+</Project>
